@@ -1,0 +1,17 @@
+1-10-2015###############################################
+
+got both up and running. changed bang lines. 
+
+
+[root@bazzle qt-notepad]# ./tabtest-prototype.py 
+Traceback (most recent call last):
+  File "./tabtest-prototype.py", line 177, in <module>
+    main(sys.argv)
+  File "./tabtest-prototype.py", line 169, in main
+    window = MainWindow(title)
+  File "./tabtest-prototype.py", line 41, in __init__
+    self.open_file()
+  File "./tabtest-prototype.py", line 149, in open_file
+    f = open(filename, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: ''
+
