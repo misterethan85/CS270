@@ -23,7 +23,7 @@ class SearchDialog(Gtk.Dialog):
 class TextViewWindow(Gtk.Window):
 
     def __init__(self):
-        Gtk.Window.__init__(self, title="TextView Example")
+        Gtk.Window.__init__(self, title="Zedit")
 
         self.set_default_size(-1, 350)
 
@@ -58,7 +58,7 @@ class TextViewWindow(Gtk.Window):
 
         toolbar.insert(Gtk.SeparatorToolItem(), 3)
 
-        filemenu = Gtk.filemenu()
+        radio_justifyleft = Gtk.RadioToolButton()
         radio_justifyleft.set_icon_name("format-justify-left-symbolic")
         toolbar.insert(radio_justifyleft, 4)
 
@@ -106,8 +106,7 @@ class TextViewWindow(Gtk.Window):
         self.textview = Gtk.TextView()
         self.textbuffer = self.textview.get_buffer()
         self.textbuffer.set_text("This is some text inside of a Gtk.TextView. "
-            + "Select text and click one of the buttons 'bold', 'italic', "
-            + "or 'underline' to modify the text accordingly.")
+            + "Add Yo Text Here.")
         scrolledwindow.add(self.textview)
 
         self.tag_bold = self.textbuffer.create_tag("bold",

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import pygtk
 from gi.repository import Gtk, Pango
 
 class SearchDialog(Gtk.Dialog):
