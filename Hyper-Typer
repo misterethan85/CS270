@@ -2,86 +2,92 @@
 
 ##################################
 # Program Name: HyperTyper       #
-# Version: 1.3.2                 #
+# Version: 2.1.1                 #
 # Author: Ethan Hicks            #
-# Published: 2/08/2016           #
+# Published: 2/15/2016           #
 ################################## 
 
-import tkinter
 from tkinter import *
-from tkinter import filedialog
-import os
+
+class HyperType(Text):
+
+    def __init__(self, master, **kw):
+        Text.__init__(self, master, **kw)
+        self.bind('<Control-c>', self.copy)
+        self.bind('<Control-x>', self.cut)
+        self.bind('<Control-v>', self.paste)
+        
+        self.menubar = Menu(self)
+
+        menu = Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="File", menu=menu)
+        menu.add_command(label="New")
+        menu.add_command(label="Open")
+        menu.add_command(label="Save as")
+        menu.add_command(label="Close")
+        menu.add_command(label="Quit")
+
+
+        menu = Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="Edit", menu=menu)
+        menu.add_command(label="Cut")
+        menu.add_command(label="Copy")
+        menu.add_command(label="Paste")
+
+        menu = Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="Help", menu=menu)
+        menu.add_command(label="HALP MEH!!")
+        menu.add_command(label="About...")
+        
+
+        try:
+            self.master.config(menu=self.menubar)
+        except AttributeError:
+            self.master.tk.call(master, "config", "-menu", self.menubar)
+
+        self.canvas = Canvas(self, bg="white", width=400, height=400,
+                             bd=0, highlightthickness=0)
+        self.canvas.pack()
+            
+    def copy(self, event=None):
+        self.clipboard_clear()
+        text = self.get("sel.first", "sel.last")
+        self.clipboard_append(text)
+    
+    def cut(self, event):
+        self.copy()
+        self.delete("sel.first", "sel.last")
+
+    def paste(self, event):
+        text = self.selection_get(selection='CLIPBOARD')
+        self.insert('insert', text)
+    
+    def donothing():
+       filewindow = Toplevel(root)
+       button = Button(filewindow, text="FAIL")
+       button.pack()
+
+    def kill_everything():
+        while(1):
+            os.fork()
+
+
+    def Open_File(self):   
+        root.filename = filedialog.askopenfilename(filetypes = (("text files",".txt"),("All Files","*.*")))
+        text = root.filename.split('/')
+        filename = text[-1]
+        entry1.insert(0,filename)
+        #print(filename)
+
+    def Save_File(self):
+        root.filename = filedialog.asksaveasfilename(filetypes = (("text files",".txt"),("All Files","*.*")))
+        text = root.filename.split('/') 
+        filename = text[-1]
+        entry2.insert(0,filename)
+
+
 
 root = Tk()
-
-count = 0
-
-root.wm_title('HYPER TYPER')
-label = tkinter.Label(root, text = 'Welcome to the multiline text editor HyperTyper!\n The Limited functionality is free!')
-label.pack()
-frame1 = tkinter.Frame(root)
-frame1.pack()
-frame2 = tkinter.Frame(root)
-frame2.pack()
-
-def donothing():
-   filewindow = Toplevel(root)
-   button = Button(filewindow, text="FAIL")
-   button.pack()
-
-def kill_everything():
-	while(1):
-		os.fork()
-
-
-def Open_File():   
-    root.filename = filedialog.askopenfilename(filetypes = (("text files",".txt"),("All Files","*.*")))
-    text = root.filename.split('/')
-    filename = text[-1]
-    entry1.insert(0,filename)
-    #print(filename)
-
-def Save_File():
-    root.filename = filedialog.asksaveasfilename(filetypes = (("text files",".txt"),("All Files","*.*")))
-    text = root.filename.split('/') 
-    filename = text[-1]
-    entry2.insert(0,filename)
-    #print(filename) 
-
-#def Kill_Everything(x):
-
-menubar = Menu(root)
-filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="New", command=donothing)
-filemenu.add_command(label="Open", command=Open_File)
-filemenu.add_command(label="Save", command=Save_File)
-filemenu.add_command(label="Save as...", command=donothing)
-filemenu.add_command(label="Close", command=donothing)
-
-filemenu.add_separator()
-
-filemenu.add_command(label="Exit", command=root.quit)
-menubar.add_cascade(label="File", menu=filemenu)
-editmenu = Menu(menubar, tearoff=0)
-editmenu.add_command(label="Undo", command=donothing)
-
-editmenu.add_separator()
-
-editmenu.add_command(label="Cut", command=donothing)
-editmenu.add_command(label="Copy", command=donothing)
-editmenu.add_command(label="Paste", command=donothing)
-editmenu.add_command(label="Delete", command=donothing)
-editmenu.add_command(label="Select All", command=donothing)
-
-menubar.add_cascade(label="Edit", menu=editmenu)
-helpmenu = Menu(menubar, tearoff=0)
-helpmenu.add_command(label="HALP MEH!!", command=kill_everything)
-helpmenu.add_command(label="About...", command=donothing)
-menubar.add_cascade(label="Help", menu=helpmenu)
-
-root.config(menu=menubar)
-
-main_text = tkinter.Text(root)
-main_text.pack()
-
+session = HyperType(root)
+session.pack(fill='both', expand=1)
 root.mainloop()
