@@ -2,12 +2,19 @@
 
 ##################################
 # Program Name: HyperTyper       #
-# Version: 2.1.1                 #
+# Version: 2.1.8                 #
 # Author: Ethan Hicks            #
 # Published: 2/15/2016           #
 ################################## 
 
-from tkinter import *
+
+try:
+    # for Python2
+    from Tkinter import * 
+except ImportError:
+    # for Python3
+    from tkinter import * 
+
 
 class HyperType(Text):
 
@@ -16,6 +23,8 @@ class HyperType(Text):
         self.bind('<Control-c>', self.copy)
         self.bind('<Control-x>', self.cut)
         self.bind('<Control-v>', self.paste)
+        self.bind('<Control-s>', self.save)
+        self.bind('<Control-o>', self.Open_File)
         
         self.menubar = Menu(self)
 
@@ -23,10 +32,9 @@ class HyperType(Text):
         self.menubar.add_cascade(label="File", menu=menu)
         menu.add_command(label="New")
         menu.add_command(label="Open")
-        menu.add_command(label="Save as")
+        menu.add_command(label="Save")
         menu.add_command(label="Close")
         menu.add_command(label="Quit")
-
 
         menu = Menu(self.menubar, tearoff=0)
         self.menubar.add_cascade(label="Edit", menu=menu)
@@ -39,40 +47,31 @@ class HyperType(Text):
         menu.add_command(label="HALP MEH!!")
         menu.add_command(label="About...")
         
-
         try:
             self.master.config(menu=self.menubar)
         except AttributeError:
             self.master.tk.call(master, "config", "-menu", self.menubar)
-
-        self.canvas = Canvas(self, bg="white", width=400, height=400,
-                             bd=0, highlightthickness=0)
-        self.canvas.pack()
             
     def copy(self, event=None):
         self.clipboard_clear()
         text = self.get("sel.first", "sel.last")
         self.clipboard_append(text)
     
-    def cut(self, event):
+    def cut(self, event=None):
         self.copy()
         self.delete("sel.first", "sel.last")
 
-    def paste(self, event):
+    def paste(self, event=None):
         text = self.selection_get(selection='CLIPBOARD')
         self.insert('insert', text)
     
-    def donothing():
-       filewindow = Toplevel(root)
-       button = Button(filewindow, text="FAIL")
-       button.pack()
+    def save(self, event=None):
+        print('THIS SAVES SOMETHING')
+    
+    def new(self, event=None):
+        print('This Will Create a new window')
 
-    def kill_everything():
-        while(1):
-            os.fork()
-
-
-    def Open_File(self):   
+    def Open_File(self, event=None):
         root.filename = filedialog.askopenfilename(filetypes = (("text files",".txt"),("All Files","*.*")))
         text = root.filename.split('/')
         filename = text[-1]
