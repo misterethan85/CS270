@@ -1,5 +1,13 @@
 1-10-2015###############################################
 
+Package Reqs: 
+
+python3-qt5-devel-5.5.1-2.fc22.x86_64
+
+python3-qt5-5.5.1-2.fc22.x86_64
+
+
+
 got both up and running. changed bang lines. 
 
 
