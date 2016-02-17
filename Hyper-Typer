@@ -4,7 +4,7 @@
 # Program Name: HyperTyper       #
 # Version: 2.2.5                 #
 # Author: Ethan Hicks            #
-# Published: 2/17/2016           #
+# Published: 2/15/2016           #
 ################################## 
 
 
@@ -39,7 +39,7 @@ class HyperType(Text):
         #menu.add_command(label="New")
         menu.add_command(label="Open", command=self.Open_File)
         menu.add_command(label="Save", command=self.Save_File)
-        menu.add_command(label="Save as", command=self.Save_as_File)
+        menu.add_command(label="Save as", command=self.Save_File)
         menu.add_command(label="Close", command=root.destroy)
         menu.add_command(label="Quit", command=self.quit)
 
@@ -89,23 +89,24 @@ class HyperType(Text):
         print('close function on its way')
 
     def Open_File(self, event=None):
-        self.filename = filedialog.askopenfile(filetypes = (("text Files",".txt"),("All Files","*.*")))
-        filedata = self.filename.read()
+        self.filename = filedialog.askopenfilename(filetypes = (("text Files",".txt"),("All Files","*.*")))
+        #print(self)
+        #print(self.filename)
+        f = open(self.filename)
+        filedata = f.read()
         self.insert("end",filedata)
         #self.filename.close()
 
     def Save_File(self, event=None):
-        self.filename = filedialog.asksaveasfile(filetypes = (("text Files",".txt"),("All Files","*.*")),mode='w', defaultextension=".txt")
-        data = self.get("1.0",'end-1c')
-        filedata = self.filename.write(data)
-        self.filename.close() 
-
-    def Save_as_File(self, event=None):
-        filename = filedialog.asksaveasfilename()
-        if filename == None:
-            print('no dice')
-        else:
-            print('OKOKOKOK')
+        try:
+            filer = open(self.filename,'w')
+            data = self.get("1.0",'end-1c')
+            filedata = filer.write(data)
+        except AttributeError:
+            self.filename = filedialog.asksaveasfile(filetypes = (("text Files",".txt"),("All Files","*.*")),mode='w', defaultextension=".txt")
+            data = self.get("1.0",'end-1c')
+            filedata = self.filename.write(data)
+        #self.filename.close() 
     
     def Get_Help(self, event=None):
         box = messagebox.showinfo("GENERIC HELP WINDOW", "SORRY THIS IS USELESS")
