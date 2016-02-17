@@ -36,12 +36,12 @@ class HyperType(Text):
 
         menu = Menu(self.menubar, tearoff=1)
         self.menubar.add_cascade(label="File", menu=menu)
-        menu.add_command(label="New")
+        #menu.add_command(label="New")
         menu.add_command(label="Open", command=self.Open_File)
         menu.add_command(label="Save", command=self.Save_File)
         menu.add_command(label="Save as", command=self.Save_as_File)
-        menu.add_command(label="Close")
-        menu.add_command(label="Quit")
+        menu.add_command(label="Close", command=root.destroy)
+        menu.add_command(label="Quit", command=self.quit)
 
         menu = Menu(self.menubar, tearoff=1)
         self.menubar.add_cascade(label="Edit", menu=menu)
@@ -92,6 +92,7 @@ class HyperType(Text):
         self.filename = filedialog.askopenfile(filetypes = (("text Files",".txt"),("All Files","*.*")))
         filedata = self.filename.read()
         self.insert("end",filedata)
+        #self.filename.close()
 
     def Save_File(self, event=None):
         self.filename = filedialog.asksaveasfile(filetypes = (("text Files",".txt"),("All Files","*.*")),mode='w', defaultextension=".txt")
@@ -112,6 +113,6 @@ class HyperType(Text):
 
 root = Tk()
 session = HyperType(root)
-session.pack(fill='both', expand=1)
+session.pack(fill='both', expand=1,)
 root.mainloop()
 
